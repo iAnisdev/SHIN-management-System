@@ -1,36 +1,36 @@
 <template>
-  <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+  <div id="app">
+    <loader v-if="showLoaderStatus"/>
+    <router-view/>
+    <notifications group="notify" position="top center"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
+import {mapGetters , mapActions } from 'vuex'
+import loader from '@/components/shared/loaders.vue'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld,
+  name: "app",
+  components:{
+    loader
   },
-  data: () => ({
-    //
-  }),
-};
+  computed:{
+    ...mapGetters({
+      showLoaderStatus: 'showLoaderStatus'
+    }),
+  },
+  methods: {
+  
+  },
+}
 </script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+</style>

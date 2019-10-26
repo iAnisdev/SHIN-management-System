@@ -1,4 +1,4 @@
-# shin-management-system
+# shin_managment
 
 ## Project setup
 ```

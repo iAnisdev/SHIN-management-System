@@ -1,5 +1,10 @@
+const path = require('path')
+
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ]
-}
+  outputDir: path.resolve(__dirname, '../shinMSBuild/public'),
+  pwa: {
+    iconPaths: {
+      favicon32: 'img/favicon.ico',
+    }
+  }
+};
