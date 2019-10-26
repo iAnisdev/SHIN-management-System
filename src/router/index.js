@@ -25,33 +25,37 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
     beforeEnter: requireAuth,
     component: Home,
     children: [
       {
         path: '',
         name: 'states',
+        beforeEnter: requireAuth,
         component: states,
       },
       {
         path: 'transfer',
         name: 'transfer',
+        beforeEnter: requireAuth,
         component: transfer,
       },
       {
         path: 'transactions',
         name: 'transaction',
+        beforeEnter: requireAuth,
         component: transaction,
       },
       {
         path: 'accounts',
         name: 'accounts',
+        beforeEnter: requireAuth,
         component: accounts,
       },
       {
         path: 'info',
         name: 'userInfo',
+        beforeEnter: requireAuth,
         component: userInfo,
       },
     ]

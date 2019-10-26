@@ -129,7 +129,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      phone: "18621549424",
+      phone: "",
       walletAddr: "",
       username: "",
       refer: "",
