@@ -8,10 +8,7 @@ Vue.use(Vuex)
 
 const state = {
     userToken: '',
-    isLoggedIN: false,
-    address: '',
-    saddress: '',
-    uid: ''
+    isLoggedIN: false
 }
 
 export default {

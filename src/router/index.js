@@ -15,9 +15,6 @@ import transaction from '../views/transaction.vue'
 import accounts from '../views/accounts.vue'
 import userInfo from '../views/userInfo.vue'
 
-// ---------------------------- components
-
-
 // ---------------------------- VueRouter
 
 Vue.use(VueRouter)
@@ -67,7 +64,7 @@ const routes = [
     component: login
   },
   {
-    path: '/*',
+    path: '*',
     redirect: '/'
   },
 ]
@@ -82,7 +79,7 @@ function requireAuth(to, from, next) {
   if (!store.getters.getLoginStatus) {
     let userToken = Cookies.getCookies('x-auth-tok')
     if (userToken) {
-      store.dispatch('getAdminData' , {token: userToken})
+      store.dispatch('getAdminData', { token: userToken })
       next()
     } else {
       next("/login")

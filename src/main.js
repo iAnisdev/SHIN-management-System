@@ -12,6 +12,8 @@ import underscore from 'vue-underscore'
 
 Vue.component('v-icon', Icon)
 
+import './plugins/filters'
+
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
 Vue.use(underscore)

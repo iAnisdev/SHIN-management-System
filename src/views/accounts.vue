@@ -5,19 +5,28 @@
         <b-card-group deck>
           <b-card header="Total Supply" class="text-center">
             <b-card-text>
-              <h6>Amount: {{totsupply.balance}}</h6>
+              <h4>
+                <b>Amount</b>
+              </h4>
+              <h6>{{totsupply.balance | noToFIxed(8)}}</h6>
             </b-card-text>
           </b-card>
 
           <b-card header="Checking" class="text-center">
             <b-card-text>
-              <h6>Amount: {{checking.balance}}</h6>
+              <h4>
+                <b>Amount</b>
+              </h4>
+              <h6>{{checking.balance | noToFIxed(8)}}</h6>
             </b-card-text>
           </b-card>
 
           <b-card header="Mining" class="text-center">
             <b-card-text>
-              <h6>Amount: {{mining.balance}}</h6>
+              <h4>
+                <b>Amount</b>
+              </h4>
+              <h6>{{mining.balance | noToFIxed(8)}}</h6>
             </b-card-text>
           </b-card>
         </b-card-group>
@@ -26,7 +35,10 @@
           <b-card-group deck>
             <b-card header="Advisors" class="text-center">
               <b-card-text>
-                <h6>Amount: {{advisors.balance}}</h6>
+                <h4>
+                  <b>Amount</b>
+                </h4>
+                <h6>{{advisors.balance | noToFIxed(8)}}</h6>
               </b-card-text>
               <template v-slot:footer>
                 <b-row>
@@ -41,7 +53,12 @@
             </b-card>
 
             <b-card header="Airdrop" class="text-center">
-              <b-card-text>Amount: {{airdrop.balance}}</b-card-text>
+              <b-card-text>
+                <h4>
+                  <b>Amount</b>
+                </h4>
+                <h6>{{airdrop.balance | noToFIxed(8)}}</h6>
+              </b-card-text>
               <template v-slot:footer>
                 <b-row>
                   <b-col lg="6" class="pb-2">
@@ -56,7 +73,10 @@
 
             <b-card header="Team" class="text-center">
               <b-card-text>
-                <h6>Amount: {{team.balance}}</h6>
+                <h4>
+                  <b>Amount</b>
+                </h4>
+                <h6>{{team.balance | noToFIxed(8)}}</h6>
               </b-card-text>
               <template v-slot:footer>
                 <b-row>
@@ -170,6 +190,7 @@ export default {
         "airdrop",
         "mining"
       ];
+      that.toggelLoader()
       let accountWallets = [];
       _.each(accountTypes, function(type) {
         that
@@ -194,6 +215,9 @@ export default {
           });
       });
       that.accountWallets = accountWallets;
+      setTimeout(() => {
+      that.toggelLoader()
+      } , 1000)
     },
     addAmount(type) {
       let that = this;
@@ -229,7 +253,7 @@ export default {
                 group: "notify",
                 type: "error",
                 title: "Amount Error",
-                text: `${res.message}`
+                text: `${err.message}`
               });
             });
         } else if (activeAdd == "team") {
@@ -250,7 +274,7 @@ export default {
                 group: "notify",
                 type: "error",
                 title: "Amount Error",
-                text: `${res.message}`
+                text: `${err.message}`
               });
             });
         } else if (activeAdd == "airdrop") {
@@ -271,12 +295,14 @@ export default {
                 group: "notify",
                 type: "error",
                 title: "Amount Error",
-                text: `${res.message}`
+                text: `${err.message}`
               });
             });
         } else {
+          that.toggelLoader(false);
         }
       } else {
+        that.toggelLoader(false);
         this.$notify({
           group: "notify",
           type: "error",
@@ -315,15 +341,22 @@ export default {
         that.toggelLoader();
         let data = {
           token: that.userToken,
-          to: that.walletAddr,
           amount: that.newOutValue
         };
+        let walletAddr = that.walletAddr;
+        let isStartedWith0x = /^0x/.test(walletAddr);
+        if (isStartedWith0x) {
+          walletAddr = that.walletAddr.substr(2);
+          data.to = walletAddr;
+        } else {
+          data.to = walletAddr;
+        }
         if (activeOut == "advisors") {
           that
             .tranFromAdvisors(data)
             .then(res => {
               that.getAccountDatas();
-              that.toggelLoader();
+              that.toggelLoader(false);
               this.$notify({
                 group: "notify",
                 type: "success",
@@ -336,7 +369,7 @@ export default {
                 group: "notify",
                 type: "error",
                 title: "Amount Error",
-                text: `${res.message}`
+                text: `${err.message}`
               });
             });
         } else if (activeOut == "team") {
@@ -344,7 +377,7 @@ export default {
             .tranFromTeam(data)
             .then(res => {
               that.getAccountDatas();
-              that.toggelLoader();
+              that.toggelLoader(false);
               this.$notify({
                 group: "notify",
                 type: "success",
@@ -365,7 +398,7 @@ export default {
             .tranFromAirdrop(data)
             .then(res => {
               that.getAccountDatas();
-              that.toggelLoader();
+              that.toggelLoader(false);
               this.$notify({
                 group: "notify",
                 type: "success",
@@ -374,6 +407,7 @@ export default {
               });
             })
             .catch(err => {
+              that.toggelLoader(false);
               this.$notify({
                 group: "notify",
                 type: "error",
@@ -382,6 +416,7 @@ export default {
               });
             });
         } else {
+          that.toggelLoader(false);
         }
       }
     },

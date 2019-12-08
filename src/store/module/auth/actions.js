@@ -8,7 +8,6 @@ export const userLogin = ({ commit, dispatch }, data) => new Promise((resolve, r
         if (res.data.status == 0) {
             if (res.data.result.admin == 1) {
                 let userToken = res.data.result.token
-                console.log(userToken)
                 Cookies.setCookie('x-auth-tok', userToken, 20)
                 commit('SET_LOGIN_STATUS', true)
                 commit('SET_USER_TOKEN', userToken)
@@ -19,7 +18,6 @@ export const userLogin = ({ commit, dispatch }, data) => new Promise((resolve, r
                     message: 'No admin access'
                 })
             }
-
         } else {
             reject(res.data);
         }

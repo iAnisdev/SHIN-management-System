@@ -13,6 +13,5 @@ module.exports = {
     },
     SET_ECHANGE_VALUE: (state , data) => {
         state.generalExchangeValues = data
-    },
-    
+    }
 }

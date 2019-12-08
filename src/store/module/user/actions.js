@@ -22,6 +22,7 @@ export const getAdminData = ({ commit, dispatch }, data) => {
         });
     })
 }
+
 export const getUserData = ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
         API().post('/sh/userdata.php', data).then((res) => {
@@ -36,6 +37,37 @@ export const getUserData = ({ commit, dispatch }, data) => {
         });
     })
 }
+
+export const getUserNamesList = ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+        API().post('/sh/otherunames.php', data).then((res) => {
+            if (res.data.status == 0) {
+                let usernames = res.data.usernames
+                resolve(usernames)
+            } else {
+                reject(res.data);
+            }
+        }).catch((err) => {
+            reject(err);
+        });
+    })
+}
+export const batchProcessing = ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+        API().post('/sh/batch.php', data).then((res) => {
+            if (res.data.status == 0) {
+                let results = res.data.results
+                resolve(results)
+            } else {
+                reject(res.data);
+            }
+        }).catch((err) => {
+            reject(err);
+        });
+    })
+}
+
+
 export const getWalletBalanceByAddress = ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
         API().post('/sh/balanceOf.php', data).then((res) => {

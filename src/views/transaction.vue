@@ -64,43 +64,43 @@
     <b-card class="mt-2" v-if="noSuchTrans">
       <b-alert show variant="warning">No Such Transactions</b-alert>
     </b-card>
-    <b-modal
-      :title="`Transaction Detail`"
-      v-model="transactionInfo"
-      hide-footer
-    >
-    <div class="rowSB">
-      <h5>Id</h5>
-      <p>{{targetTrans.id}}</p>
-    </div>
-    <div class="rowSB">
-      <h5>Time</h5>
-      <p>{{targetTrans.time}}</p>
-    </div>
-    <div class="rowSB">
-      <h5>Type</h5>
-      <p>{{targetTrans.type}}</p>
-    </div>
-    <div class="rowSB">
-      <h5>From</h5>
-      <p><a  :href="`/info?walletAddr=${targetTrans.from}`">{{targetTrans.from}}</a></p>
-    </div>
-    <div class="rowSB">
-      <h5>From Balance</h5>
-      <p>{{targetTrans.frombal}}</p>
-    </div>
-    <div class="rowSB">
-      <h5>To</h5>
-      <p><a :href="`/info?walletAddr=${targetTrans.to}`">{{targetTrans.to}}</a></p>
-    </div>
-    <div class="rowSB">
-      <h5>To Balance</h5>
-      <p>{{targetTrans.tobal}}</p>
-    </div>
-    <div class="rowSB">
-      <h5>Amount</h5>
-      <p>{{targetTrans.amount}} {{targetTrans.symbol}}</p>
-    </div>
+    <b-modal :title="`Transaction Detail`" v-model="transactionInfo" hide-footer>
+      <div class="rowSB">
+        <h5>Id</h5>
+        <p>{{targetTrans.id}}</p>
+      </div>
+      <div class="rowSB">
+        <h5>Time</h5>
+        <p>{{targetTrans.time}}</p>
+      </div>
+      <div class="rowSB">
+        <h5>Type</h5>
+        <p>{{targetTrans.type}}</p>
+      </div>
+      <div class="rowSB">
+        <h5>From</h5>
+        <p>
+          <a :href="`/info?walletAddr=${targetTrans.from}`">{{targetTrans.from}}</a>
+        </p>
+      </div>
+      <div class="rowSB">
+        <h5>From Balance</h5>
+        <p>{{targetTrans.frombal}}</p>
+      </div>
+      <div class="rowSB">
+        <h5>To</h5>
+        <p>
+          <a :href="`/info?walletAddr=${targetTrans.to}`">{{targetTrans.to}}</a>
+        </p>
+      </div>
+      <div class="rowSB">
+        <h5>To Balance</h5>
+        <p>{{targetTrans.tobal}}</p>
+      </div>
+      <div class="rowSB">
+        <h5>Amount</h5>
+        <p>{{targetTrans.amount}} {{targetTrans.symbol}}</p>
+      </div>
     </b-modal>
   </section>
 </template>
@@ -200,7 +200,7 @@ export default {
 
       var tyyyy = today.getFullYear();
       if (tdd < 10) {
-        tdd = "0" + dd;
+        tdd = "0" + tdd;
       }
       if (tmm < 10) {
         tmm = "0" + tmm;
@@ -236,10 +236,17 @@ export default {
         that.toggelLoader();
         let data = {
           token: that.userToken,
-          address: walletAddr,
           sdate: that.sdate,
           edate: that.edate
         };
+        let walletAddr = that.walletAddr;
+        let isStartedWith0x = /^0x/.test(walletAddr);
+        if (isStartedWith0x) {
+          walletAddr = that.walletAddr.substr(2);
+          data.address = walletAddr;
+        } else {
+          data.address = walletAddr;
+        }
         if (that.selected !== "all") {
           data.type = that.selected;
         }
@@ -254,7 +261,7 @@ export default {
               tran.tobal = Number(tran.tobal).toFixed(4);
               tran.time = tran.time.substring(0, 19);
               if (tran.type == "") {
-                tran.type = "Normal";
+                tran.type = "normal";
               }
               transactionList.push(tran);
             });
@@ -298,8 +305,8 @@ export default {
     },
     getRowInfo(row) {
       let that = this;
-      that.targetTrans = row
-      that.transactionInfo = true
+      that.targetTrans = row;
+      that.transactionInfo = true;
     },
     isValid(value) {
       if (
@@ -327,13 +334,13 @@ export default {
 </script>
 
 <style scoped>
-.rowSB{
+.rowSB {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding-top: 2px;
 }
-.bt{
+.bt {
   border-top: 1px solid lightgray;
 }
 </style>

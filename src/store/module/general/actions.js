@@ -2,7 +2,6 @@ import API from '@/plugins/API'
 import Storage from '@/plugins/Storage'
 import Cookies from '@/plugins/cookies'
 import router from '@/router'
-import { reject } from 'q'
 
 export const toggelLoader = ({ commit, dispatch }, data) => {
     commit('SET_LOADER_STATUS')
@@ -51,7 +50,6 @@ export const getAccountTypes = ({ commit, dispatch }, data) => {
     })
 }
 export const getWalletBalance = ({ commit, dispatch }, data) => {
-    // console.log('called ' , data)
     return new Promise((resolve, reject) => {
         API().post('/sh/balanceOf.php', data).then((res) => {
             if (res.data.status == 0) {

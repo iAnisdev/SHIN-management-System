@@ -62,7 +62,6 @@ export default {
     }),
 
     transfer() {
-      console.log("clicked");
       let that = this;
       if (!that.isValid(that.walletAddr)) {
         this.$notify({
@@ -82,10 +81,17 @@ export default {
         that.toggelLoader();
         let data = {
           token: that.userToken,
-          to: that.walletAddr,
           amount: that.amount,
           type: "other"
         };
+        let walletAddr = that.walletAddr;
+        let isStartedWith0x = /^0x/.test(walletAddr);
+        if (isStartedWith0x) {
+          walletAddr = that.walletAddr.substr(2);
+          data.to = walletAddr;
+        } else {
+          data.to = walletAddr;
+        }
         that
           .transferToUser(data)
           .then(res => {
